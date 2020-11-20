@@ -10,6 +10,8 @@ $factory->define(App\ModeloUsuario::class, function (Faker $faker) {
         'nombre'=>$faker->name(),
         'correo'=>$faker->unique()->safeEmail(),
         'password'=>Hash::make("12345678"),
-        'rol'=>"user"
+        'rol'=>Arr::random(['user','vendedor']),
+        'verificado'=>false,
+        'url_imagen'=>null
     ];
 });

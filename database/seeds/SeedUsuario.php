@@ -18,7 +18,9 @@ class SeedUsuario extends Seeder
             'nombre'=>'admin',
             'correo'=>'admin@gmail.com',
             'password'=>Hash::make("12345678"),
-            'rol'=>'admin'
+            'rol'=>'admin',
+            'verificado'=>true,
+            'url_imagen'=>NULL
         ]);
 
         $use=factory(App\ModeloUsuario::class,15)->create();

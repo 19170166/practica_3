@@ -46,15 +46,15 @@ class Controller extends BaseController
             
         if($usuario->rol=='user'){
             $token=$usuario->createToken($request->correo,['user'])->plainTextToken;
-            return response()->json(['token de usuario'=>$token,200]);
+            return response()->json(['token de usuario'=>$token],200);
         }
         else if($usuario->rol=='admin'){
             $token=$usuario->createToken($request->correo,['admin'])->plainTextToken;
-            return response()->json(['token de admin'=>$token,200]);
+            return response()->json(['token de admin'=>$token],200);
         }
         else if($usuario->rol=='vendedor'){
             $token=$usuario->createToken($request->correo,['vendedor'])->plainTextToken;
-            return response()->json(['token de vendedor'=>$token,200]);
+            return response()->json(['token de vendedor'=>$token],200);
         }
     }
 
@@ -71,8 +71,11 @@ class Controller extends BaseController
         $usu=ModeloUsuario::where('correo',$request->correo)->first();
         if($usu->tokens[0]->abilities[0]=='admin'){
             $token=ModeloToken::where('name',$request->correo_usuario)->first();
-            $token->update(['abilities'=>'["'.$request->permiso.'"]']);
-            if($token->save()){
+            $per=ModeloUsuario::where('correo',$request->correo_usuario)->first();
+            //$token->update(['abilities'=>'["'.$request->permiso.'"]']);
+            $token->update(['abilities'=>$request->permiso]);
+            $per->update(['rol'=>$request->rol]);
+            if($token->save()&&$per->save()){
                 return response()->json('permiso modificado');
             }
         }

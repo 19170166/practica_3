@@ -19,6 +19,8 @@ class MigracionUsuario extends Migration
             $table->string('correo',60)->unique();
             $table->string('password',250);
             $table->string('rol',10);
+            $table->boolean('verificado',false);
+            $table->string('url_imagen',100)->nullable();
         });
     }
 

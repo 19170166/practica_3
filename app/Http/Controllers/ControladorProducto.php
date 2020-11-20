@@ -16,28 +16,40 @@ class ControladorProducto extends Controller
             $pro=new ModeloProducto();
             $pro->nombre_producto=$request->nombre_producto;
             if ($pro->save()) {
-            return response()->json(['Producto registrado',$pro],200);
-        }
-        return response()->json('Producto no registrado...');
+                return response()->json(['Producto registrado',$pro],200);
+            }
+                return response()->json('Producto no registrado...');
         }
         return abort(400,'No tiene permiso para acceder');
         
     }
 
     public function eliminarproducto(Request $request){
-        $com=ModeloComentario::where('id_producto',$request->id);
-        $com->delete();
-        $pro=ModeloProducto::where('id',$request->id);
-        $pro->delete();
+        $usu=ModeloUsuario::where('correo',$request->correo)->first();
+        if($usu->tokens[0]->abilities[0]=="vendedor"||$usu->tokens[0]->abilities[0]=="admin"){
+            $com=ModeloComentario::where('id_producto',$request->id);
+            //$com->delete();
+            $pro=ModeloProducto::where('id',$request->id);
+            //$pro->delete();
+            if ($pro->delete()&&$com->delete()) {
+                return response()->json(['Producto Eliminado',$pro],200);
+            }
+        }
+        return abort(400,'No tiene permiso para acceder');
     }
 
     public function modificarproducto(Request $request){
-        $pro=ModeloProducto::find($request->$id);
-        $pro->update(['nombre_producto'=>$request->nombre_producto]);
-        if($pro->save()){
-            return response()->json('Producto modificado',200);
+        $usu=ModeloUsuario::where('correo',$request->correo)->first();
+        if($usu->tokens[0]->abilities[0]=="vendedor"||$usu->tokens[0]->abilities[0]=="admin"){
+            $pro=ModeloProducto::find($request->$id);
+            $pro->update(['nombre_producto'=>$request->nombre_producto]);
+            if($pro->save()){
+                return response()->json('Producto modificado',200);
+            }
+            return response()->json('Producto no midificado...',400);
         }
-        return response()->json('Producto no midificado...',400);
+        return abort(400,'No tiene permiso para acceder');
+
     }
 
     public function mostrarproducto($id=null){
