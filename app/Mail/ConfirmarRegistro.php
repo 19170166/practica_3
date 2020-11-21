@@ -20,7 +20,8 @@ class ConfirmarRegistro extends Mailable
      */
     public function __construct(ModeloUsuario $usu)
     {
-        $this->usu = $usu;
+        $this->usu=$usu;
+        
     }
 
     /**
@@ -30,7 +31,7 @@ class ConfirmarRegistro extends Mailable
      */
     public function build()
     {
-        return $this->from('admin@gmail.com')
+        return $this->from('angelzapata582@gmail.com')
                     ->view('prueba');
                     
     }

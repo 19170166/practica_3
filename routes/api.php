@@ -29,11 +29,13 @@ Route::post('/registrar','Controller@registro');
 Route::post('/login','Controller@login');
 Route::post('/agregar/comentario','ControladorComentario@agregarcomentario');
 Route::post('/agregar/producto','ControladorProducto@agregarproducto');
+Route::post('/correo','ControladorMail@correoprueba');
 
 Route::put('/modificar/comentario','ControladorComentario@modificarcomentario');
 Route::put('/modificar/producto','ControladorProducto@modificarproducto');
 Route::put('/modificar/usuario','ControladorUsuario@modificarusuario');
 Route::put('/modificar/permisos','Controller@modificarpermiso')->middleware('checkadmin');
+Route::put('/actualizar/cuanta','ControladorMail@verificarusuario');
 
 Route::delete('/borrar/comentario','ControladorComentario@eliminarcomentario');
 Route::delete('/borrar/producto','ControladorProducto@eliminarproducto');

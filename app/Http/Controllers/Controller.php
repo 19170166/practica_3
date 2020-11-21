@@ -26,6 +26,8 @@ class Controller extends BaseController
         $usuario->correo=$request->correo;
         $usuario->password=Hash::make($request->password);
         $usuario->rol='user';
+        $usuario->verificado=false;
+        $usuario->url_imagen=null;
         if($usuario->save()){
             return response()->json($usuario,200);
         }
@@ -37,7 +39,7 @@ class Controller extends BaseController
             'password'=>'required'
         ]);
         $usuario=ModeloUsuario::where('correo',$request->correo)->first();
-
+        
         if(!$usuario||!Hash::check($request->password,$usuario->password)){
             throw ValidationException::withMessages([
                 'correo|password'=>['Datos incorrectos...']
