@@ -8,10 +8,10 @@ class ModeloProducto extends Model
 {
 
     protected $table='productos';
-    protected $filable='nombre_producto';
+    protected $fillable='nombre_producto';
     public $timestamps=false;
 
     public function comentario(){
-        return $this->hasMany('App\ModeloProducto','id_producto');
+        return $this->hasMany('App\ModeloComentario','id_producto');
     }
 }

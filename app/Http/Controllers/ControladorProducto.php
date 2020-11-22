@@ -38,10 +38,11 @@ class ControladorProducto extends Controller
         return abort(400,'No tiene permiso para acceder');
     }
 
-    public function modificarproducto(Request $request){
+    public function modificarproducto(Request $request,$id){
         $usu=ModeloUsuario::where('correo',$request->correo)->first();
         if($usu->tokens[0]->abilities[0]=="vendedor"||$usu->tokens[0]->abilities[0]=="admin"){
-            $pro=ModeloProducto::find($request->$id);
+            $pro=ModeloProducto::find($id);
+            //return $pro;
             $pro->update(['nombre_producto'=>$request->nombre_producto]);
             if($pro->save()){
                 return response()->json('Producto modificado',200);

@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Hola Mundo</title>
+	<title>Verifica tu correo</title>
 </head>
 <body>
-<p>Este es un correo de prueba</p>
-<p>nombre:{{$usu->nombre}}</p>
-<p>correo:{{$usu->correo}}</p>
-<a href='http://127.0.0.1:8000/api/actualizar/cuanta'>confirma tu correo</a>
+<h1>Bienvenido!!</h1>
+<p>Hola, <b>{{$usu->nombre}}</b> te has registrado con el correo <b>{{$usu->correo}}</b> para
+verificar tu correo da clic en el siguiente enlace</p>
+<a href='http://127.0.0.1:8000/api/actualizar/cuenta'>confirma tu correo</a>
 </body>
 </html>

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\ModeloUsuario;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\ConfirmarRegistro;
+use Illuminate\Support\Facades\DB;
 
 class ControladorMail extends Controller
 {
@@ -17,9 +18,10 @@ class ControladorMail extends Controller
     }
 
     public function verificarusuario(Request $request){
-        $usu=ModeloUsuario::where('correo',$request->correo);
+        $usu=ModeloUsuario::where('correo',$request->correo)->first();
+        return response()->json([$usu]);
         $usu->update(['verificado'=>true],200);
         $usu->save();
-        return $usu;
+        
     }
 }
