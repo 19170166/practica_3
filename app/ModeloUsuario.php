@@ -10,7 +10,7 @@ class ModeloUsuario extends Model
 {
     use HasApiTokens,Notifiable;
     protected $table='usuarios';
-    protected $fillable=['nombre','correo','password','rol'];
+    protected $fillable=['nombre','correo','password','rol','verificado','url_imagen'];
     public $timestamps=false;
 
     public function comentario(){
@@ -19,6 +19,9 @@ class ModeloUsuario extends Model
 
     public function token(){
         return $this->hasOne('App\ModeloToken','tokenable_id');
+    }
+    public function articulo(){
+        return $this->hasMany('App\ModeloArticulo','id_vendedor');
     }
 
     public function getAuthIdentifier(){

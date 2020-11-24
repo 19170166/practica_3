@@ -16,7 +16,7 @@ class MigracionComentario extends Migration
         Schema::create('comentarios',function(Blueprint $table){
             $table->id();
             $table->string('comentario',100);
-            $table->foreignId('id_producto')->references('id')->on('Productos');
+            $table->foreignId('id_producto')->references('id')->on('articulos');
             $table->foreignId('id_usuario')->references('id')->on('Usuarios');
         });
     }

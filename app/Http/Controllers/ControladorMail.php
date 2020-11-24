@@ -17,11 +17,10 @@ class ControladorMail extends Controller
         //return response()->json(["correo"=>$correo],200);
     }
 
-    public function verificarusuario(Request $request){
-        $usu=ModeloUsuario::where('correo',$request->correo)->first();
-        return response()->json([$usu]);
-        $usu->update(['verificado'=>true],200);
+    public function verificarusuario($id){
+        $usu=ModeloUsuario::find($id);
+        $usu->update(['verificado'=>true]);
         $usu->save();
-        
+        return response()->json(['verificado'=>$usu]);
     }
 }

@@ -11,7 +11,7 @@ class ModeloComentario extends Model
     public $timestamps=false;
 
     public function producto(){
-        return $this->hasOne('App\ModeloProducto','id');
+        return $this->hasOne('App\ModeloArticulo','id');
     }
     public function usuario(){
         return $this->hasOne('App\ModeloUsuario','id');

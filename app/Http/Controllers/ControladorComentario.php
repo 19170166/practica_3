@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\ModeloComentario;
-use App\ModeloProducto;
+use App\ModeloArticulo;
 use App\ModeloUsuario;
 use App\Mail\NotificarAccion;
+use App\Mail\NotificarComentario;
+use App\Mail\NotificarComentarioU;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\DB;
 
@@ -14,14 +16,18 @@ class ControladorComentario extends Controller
 {
     public function agregarcomentario(Request $request){
         $usu=ModeloUsuario::where('correo',$request->correo)->first();
-        return $usu;
         if($usu->tokens[0]->abilities[0]=='admin'||$usu->tokens[0]->abilities[0]=='user'){
             $com=new ModeloComentario();
             $com->comentario=$request->comentario;
             $com->id_usuario=$usu->id;
             $com->id_producto=$request->id_producto;
+            $art=ModeloArticulo::find($com->id_producto);
+            $ven=ModeloUsuario::find($art->id_vendedor);
+            
             if($com->save()){
-                return response()->json(['Comentario agregado',200]);
+                Mail::to($ven->correo)->send(new NotificarComentario($usu,$com,$art));
+                Mail::to($usu->correo)->send(new NotificarComentarioU($com,$art));
+                return response()->json(['Comentario agregado'],200);
             }
             return response()->json(['Error al agregar...',400]);
         }
@@ -32,10 +38,10 @@ class ControladorComentario extends Controller
         }
     }
 
-    public function eliminarcomentario(Request $request){
+    public function eliminarcomentario(Request $request,$id){
         $usu=ModeloUsuario::where('correo',$request->correo)->first();
         if($usu->tokens[0]->abilities[0]=='admin'||$usu->tokens[0]->abilities[0]=='user'){
-        $com=ModeloComentario::find($request->id);
+        $com=ModeloComentario::find($id)->first();
         if($com->delete()){
             return response()->json(['Comentario eliminado',200]);
         }

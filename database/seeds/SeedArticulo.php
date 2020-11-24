@@ -4,7 +4,7 @@ use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Faker\Factory as Faker;
 
-class SeedProducto extends Seeder
+class SeedArticulo extends Seeder
 {
     /**
      * Run the database seeds.
@@ -13,6 +13,6 @@ class SeedProducto extends Seeder
      */
     public function run()
     {
-        $pro=factory(App\ModeloProducto::class,15)->create();
+        $art=factory(App\ModeloArticulo::class,15)->create();
     }
 }

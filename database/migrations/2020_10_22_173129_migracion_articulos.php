@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class MigracionProducto extends Migration
+class MigracionArticulos extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,10 @@ class MigracionProducto extends Migration
      */
     public function up()
     {
-        Schema::create('productos',function(Blueprint $table){
+        schema::create('articulos',function(Blueprint $table){
             $table->id();
-            $table->string('nombre_producto',50);
+            $table->string('nombre_articulo',50);
+            $table->foreignId('id_vendedor')->references('id')->on('Usuarios');
         });
     }
 
@@ -26,6 +27,7 @@ class MigracionProducto extends Migration
      */
     public function down()
     {
-        dropIfExists('productos');
+        Schema::dropForeign(['id_vendedor']);
+        dropIfExists('articulos');
     }
 }

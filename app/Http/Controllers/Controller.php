@@ -7,6 +7,8 @@ use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\ConfirmarRegistro;
+use App\Mail\NotificarAccion;
+use App\Mail\NotificacionActualizacion;
 use Illuminate\Routing\Controller as BaseController;
 use App\ModeloUsuario;
 use App\ModeloToken;
@@ -66,7 +68,7 @@ class Controller extends BaseController
         return response()->json(['Error al iniciar sesion, verifique su cuenta primero'],400);
     }
 
-    public function logout(){
+    public function logout(Request $request){
         return response()->json(['Token afectados'=>$request->user()->tokens()->delete()],200);
     }
     
@@ -75,18 +77,24 @@ class Controller extends BaseController
         return response()->json([$usuario->tokens[0]->abilities],200);
     }
 
-    public function modificarpermiso(Request $request){
+    public function modificarpermiso(Request $request,$id){
         $usu=ModeloUsuario::where('correo',$request->correo)->first();
         if($usu->tokens[0]->abilities[0]=='admin'){
-            $token=ModeloToken::where('name',$request->correo_usuario)->first();
-            $per=ModeloUsuario::where('correo',$request->correo_usuario)->first();
+            $token=ModeloToken::where('tokenable_id',$id)->first();
+            $per=ModeloUsuario::where('id',$id)->first();
             //$token->update(['abilities'=>'["'.$request->permiso.'"]']);
+            //return response()->json($token);
             $token->update(['abilities'=>$request->permiso]);
             $per->update(['rol'=>$request->rol]);
             if($token->save()&&$per->save()){
+                Mail::to($per->correo)->send(new NotificacionActualizacion($request->rol));
                 return response()->json('permiso modificado');
             }
         }
-        return response()->json(['No tiene permiso...',400]);
+        
+        //1|dor8NZpAaWRM8HjlJBXeZY13rG4izi4gvP3TlEXA
+        //2|oikC7d16SWa5LmoCbLL0B1K1Xaav5wYPCgTnDDui
+        //3|SyCC0ejWs6NATONjbP6IXuCWVXoGVskuuFAR4dFp
+        //4|QDXTUlMXH72VMgJK1xvktN6nioRkDSCzuCAqAZtk
     }
 }
